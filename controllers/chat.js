@@ -1,3 +1,4 @@
+const Message = require("../models/message");
 const NotFound = require("../utils/Errors/NotFound");
 const BadRequest = require("../utils/Errors/BadRequest");
 const ForbiddenError = require("../utils/Errors/ForbiddenError");
@@ -17,7 +18,7 @@ module.exports.createMessage = (req, res, next) => {
   const owner = req.user.id;
 
   const { text, date } = req.body;
-  Article.create({
+  Message.create({
     text,
     date,
     owner,
@@ -35,12 +36,12 @@ module.exports.createMessage = (req, res, next) => {
 module.exports.deleteMessage = (req, res, next) => {
   const userId = req.user.id;
   const { _messageId } = req.params;
-  Card.findById(_messageId)
+  Message.findById(_messageId)
     .populate("owner")
-    .then((card) => {
-      if (card.owner.id === userId) {
-        Card.findByIdAndDelete(_messageId).then((thisCard) => {
-          res.status(200).send(thisCard);
+    .then((message) => {
+      if (message.owner.id === userId) {
+        Message.findByIdAndDelete(_messageId).then((thisMessage) => {
+          res.status(200).send(thisMessage);
         });
       } else {
         const err = new ForbiddenError("Запрещено удалять чужие карточки");

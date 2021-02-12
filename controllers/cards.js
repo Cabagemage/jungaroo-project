@@ -1,10 +1,10 @@
-const Article = require("../models/article");
+const Card = require("../models/card");
 const NotFound = require("../utils/Errors/NotFound");
 const BadRequest = require("../utils/Errors/BadRequest");
 const ForbiddenError = require("../utils/Errors/ForbiddenError");
 
 module.exports.getCards = (req, res, next) => {
-  Article.find({})
+  Card.find({})
     .orFail(() => {
       throw new NotFound("Карточки не найдены");
     })
@@ -18,7 +18,7 @@ module.exports.createCard = (req, res, next) => {
   const owner = req.user.id;
 
   const { title, text, date } = req.body;
-  Article.create({
+  Card.create({
     title,
     text,
     date,

@@ -1,5 +1,5 @@
-const JWT_SECRET = 'EAT_THIS_FISH';
-const mongoDBUrl = 'mongodb://localhost:27017/newsdb';
+const JWT_SECRET = "EAT_THIS_FISH";
+const mongoDBUrl = "mongodb://localhost:27017/jungaroo";
 const mongoDBOptions = {
   useNewUrlParser: true,
   useCreateIndex: true,
