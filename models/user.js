@@ -3,7 +3,15 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const NotFound = require("../utils/Errors/NotFound");
 const ConflictError = require("../utils/Errors/ConflictError");
-
+const {
+  uniqueNamesGenerator,
+  adjectives,
+  colors,
+  animals,
+} = require("unique-names-generator");
+const randomName = uniqueNamesGenerator({
+  dictionaries: [adjectives, colors, animals],
+});
 const { Schema } = mongoose;
 
 const User = new Schema({
@@ -19,6 +27,11 @@ const User = new Schema({
     type: String,
     required: true,
     select: false,
+  },
+  name: {
+    type: String,
+    required: true,
+    default: "Пользователь",
   },
   avatar: {
     type: String,

@@ -1,8 +1,10 @@
 const userRouter = require('express').Router();
 
 const {
-  getOwnerInfo,
+  getOwnerInfo, getUsers
 } = require('../controllers/users');
+
+userRouter.get('/', getUsers);
 
 userRouter.get('/me', getOwnerInfo);
 

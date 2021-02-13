@@ -8,6 +8,17 @@ const NotFound = require("../utils/Errors/NotFound");
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
+module.exports.getUsers = (req, res, next) => {
+  User.find({})
+    .orFail(() => {
+      throw new NotFound("Пользователи не найдены");
+    })
+    .then((users) => {
+      res.send({ date: users });
+    })
+    .catch(next);
+};
+
 module.exports.createUser = (req, res, next) => {
   const { email, password } = req.body;
   User.findOne({ email }).then((user) => {
@@ -29,11 +40,14 @@ module.exports.createUser = (req, res, next) => {
         email: req.body.email,
         password: hash,
         avatar: req.body.avatar,
+        name: req.body.name,
+        id: req.body._id
       }).then((user) => {
         res.status(200).send({
-          name: user.name,
           email: user.email,
           avatar: user.avatar,
+          name: user.name,
+          id: user._id
         });
       })
     )
@@ -52,8 +66,9 @@ module.exports.getOwnerInfo = (req, res, next) => {
     })
     .then((user) =>
       res.send({
-        name: user.name,
+        avatar: user.avatar,
         email: user.email,
+        id: user.id
       })
     )
     .catch((err) => {
