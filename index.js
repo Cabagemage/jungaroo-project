@@ -1,8 +1,8 @@
-const express = require("express");
+ 
 const mongoose = require("mongoose");
-const feathers = require('@feathersjs/feathers');
 const bodyParser = require("body-parser");
 const cors = require("cors");
+
 const { Joi, celebrate, errors } = require("celebrate");
 const helmet = require("helmet");
 const { limiter } = require("./utils/optional/limiter.js");
@@ -11,13 +11,26 @@ const { createUser, login } = require("./controllers/users");
 const auth = require("./middlewares/auth");
 const { mongoDBUrl, mongoDBOptions } = require("./utils/configs/config.js");
 
+
 const { PORT = 3000 } = process.env;
-const app = express(feathers());
+
+const socketIo = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+socketIo.on("connection", (socket) => {
+  console.log('user on')
+});
+app.io = socketIo;
 
 app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
 
 app.post(
   "/signin",
@@ -68,4 +81,6 @@ app.use((err, req, res, next) => {
   next();
 });
 
-app.listen(PORT, () => console.log("SERVER IS RUNNING"));
+server.listen(PORT, () => console.log("SERVER IS RUNNING"));
+
+

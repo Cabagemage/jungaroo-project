@@ -10,9 +10,11 @@ const cardsRouter = require("./cards.js");
 const chatRouter = require("./chat.js");
 
 app.use(requestLogger);
-router.use("/users", userRouter);
+
+router.use("/users",  userRouter);
 router.use("/cards", cardsRouter);
 router.use("/chat", chatRouter);
+
 
 router.use("*", (req, res, next) => {
   const error = new NotFound("Страницы не существует");

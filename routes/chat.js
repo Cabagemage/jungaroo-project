@@ -1,4 +1,8 @@
 const chatRouter = require("express").Router();
+const Message = require("../models/message");
+const express = require("express");
+
+
 const { Joi, celebrate } = require("celebrate");
 const {
   getMessages,
@@ -6,7 +10,9 @@ const {
   deleteMessage,
 } = require("../controllers/chat");
 
-chatRouter.get("/", getMessages);
+
+chatRouter.get('/', getMessages)
+
 
 chatRouter.delete(
   "/:_messageId",
