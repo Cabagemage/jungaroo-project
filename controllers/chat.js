@@ -9,7 +9,7 @@ module.exports.getMessages = (req, res, next) => {
       throw new NotFound("Сообщения не найдены");
     })
     .then((messages) => {
-      req.app.io.emit('messages', {date:messages});
+      req.app.io.emit("messages", { date: messages });
     })
     .catch(next);
 };
@@ -39,7 +39,7 @@ module.exports.deleteMessage = (req, res, next) => {
     .then((message) => {
       if (message.owner.id === userId) {
         Message.findByIdAndDelete(_messageId).then((thisMessage) => {
-          req.app.io.emit('remove-message', thisMessage);
+          req.app.io.emit("remove-message", thisMessage);
         });
       } else {
         const err = new ForbiddenError("Запрещено удалять чужие карточки");

@@ -1,16 +1,18 @@
- 
+const express = require("express");
+const http = require("http");
+const app = express();
+const server = http.createServer(app);
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
 const { Joi, celebrate, errors } = require("celebrate");
 const helmet = require("helmet");
 const { limiter } = require("./utils/optional/limiter.js");
 const router = require("./routes/index.js");
 const { createUser, login } = require("./controllers/users");
+const { Chat } = require("./models/message");
 const auth = require("./middlewares/auth");
 const { mongoDBUrl, mongoDBOptions } = require("./utils/configs/config.js");
-
 
 const { PORT = 3000 } = process.env;
 
@@ -21,7 +23,7 @@ const socketIo = require("socket.io")(server, {
   },
 });
 socketIo.on("connection", (socket) => {
-  console.log('user on')
+  console.log("user on");
 });
 app.io = socketIo;
 
@@ -29,8 +31,6 @@ app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
 
 app.post(
   "/signin",
@@ -82,5 +82,3 @@ app.use((err, req, res, next) => {
 });
 
 server.listen(PORT, () => console.log("SERVER IS RUNNING"));
-
-
